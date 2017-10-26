@@ -83,7 +83,7 @@ public class ClientHandler {
 		}
 	}
 	
-	public boolean clietExists(String nick){
+	public boolean clientExists(String nick){
 		if(allClients.containsKey(nick)){
 			return true;
 		}

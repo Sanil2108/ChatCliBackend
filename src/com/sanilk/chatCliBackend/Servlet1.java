@@ -101,10 +101,10 @@ public class Servlet1 extends HttpServlet {
 					k2=i;
 				}else if(k3==-1){
 					k3=i;
-				}else{
+				}else if(k4==-1){
 					k4=i;
 				}
-				
+
 				
 				continue;
 			}
@@ -117,9 +117,9 @@ public class Servlet1 extends HttpServlet {
 			}else if(k3==-1){
 				receiverNick+=requestContents[i];
 			}else if(k4==-1){
-				message+=requestContents[i];
-			}else{
 				password+=requestContents[i];
+			}else{
+				message+=requestContents[i];
 			}
 		}
 		
@@ -129,13 +129,13 @@ public class Servlet1 extends HttpServlet {
 
 		//All formats are from the point of view of sender.
 		//Formats
-		//SEND - senderNick:SEND:receiverNick:message:password
-		//RECEIVER - senderNick:RECEIVE:receiverNick:password
-		//CHECK - senderNick:CHECK::message:password (message contains string of usernames seperated by ';')
-		//SIGN_UP - senderNick:SIGN_UP:::password
-		//AUTHENTICATE - senderNick:AUTHENTICATE:::password
-		//SEND_LOG - :SEND_LOG::message:
-		//GET_LOG - senderNick:GET_LOG::message:password
+		//SEND - senderNick:SEND:receiverNick:password:message
+		//RECEIVER - senderNick:RECEIVE:receiverNick:password:
+		//CHECK - senderNick:CHECK::password:message (message contains string of usernames seperated by ';')
+		//SIGN_UP - senderNick:SIGN_UP::password:
+		//AUTHENTICATE - senderNick:AUTHENTICATE::password:
+		//SEND_LOG - senderNick:SEND_LOG:::message
+		//GET_LOG - senderNick:GET_LOG::password::
 		if(senderNick == "" || request_type=="" || (request_type.equals(REQUEST_TYPES[0]) && (message=="" || receiverNick=="")) || (request_type.equals(REQUEST_TYPES[1]) && receiverNick.equals("")) || 
 				(request_type.equals(REQUEST_TYPES[2]) && message.equals("")) || (request_type.equals(REQUEST_TYPES[3]) && (password.equals("") || password==null)) || (request_type.equals(REQUEST_TYPES[4]) && password.equals(""))){
 			throw new RuntimeException("Something is set null");
@@ -145,7 +145,8 @@ public class Servlet1 extends HttpServlet {
 
 		System.out.println(String.format("\nSender : %s\nRequest type : %s\nReceiver Nick : %s\nMessage : %s	\nPassword : %s", senderNick, request_type, receiverNick, message, password));
 		
-		if(!request_type.equals(REQUEST_TYPES[3]) && !request_type.equals(REQUEST_TYPES[4])){
+		if(!request_type.equals(REQUEST_TYPES[3]) && !request_type.equals(REQUEST_TYPES[4]) &&
+				!request_type.equals(REQUEST_TYPES[5]) && !request_type.equals(REQUEST_TYPES[6])){
 			if(!clientHandler.isClientAuthentic(senderNick, password)){
 				DataOutputStream dos=new DataOutputStream(response.getOutputStream());
 				dos.writeUTF("Authentication failed. The client is either not registered or the password is wrong. ");
@@ -176,7 +177,7 @@ public class Servlet1 extends HttpServlet {
 			}
 		}else if(request_type.equals(REQUEST_TYPES[3])){
 			DataOutputStream dos=new DataOutputStream(response.getOutputStream());
-			if(clientHandler.clietExists(senderNick)){
+			if(clientHandler.clientExists(senderNick)){
 				dos.writeUTF("Client name already exists");
 			}else{
 				System.out.println("Registering new client by username - "+senderNick+" and password - "+password);
