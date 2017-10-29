@@ -89,7 +89,7 @@ public class Servlet1 extends HttpServlet {
 		
 		char[] requestContents=contents.toCharArray();
 		for(int i=0;i<requestContents.length;i++){
-			if(requestContents[i] == ':'){
+			if(requestContents[i] == ':' && (k1==-1 || k2==-1 || k3==-1 || k4==-1)){
 				
 				
 				//Now that i think about it I could have just used the split() of String
