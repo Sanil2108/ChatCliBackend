@@ -9,8 +9,11 @@
         <module name="ChatCliBackend2" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="ChatCliBackend2" target="1.5" />
+    <bytecodeTargetLevel target="1.7">
+      <module name="ChatCliBackend2" target="1.7" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-source 7" />
   </component>
 </project>

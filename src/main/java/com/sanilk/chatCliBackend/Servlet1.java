@@ -14,6 +14,8 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import com.sanilk.chatCliBackend.Client.Message;
 import com.sanilk.chatCliBackend.Requests.MyRequest;
+import com.sanilk.chatCliBackend.Requests.authenticate.AuthenticateRequest;
+import com.sanilk.chatCliBackend.Requests.send.SendRequest;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -50,7 +52,7 @@ public class Servlet1 extends HttpServlet {
 
 	static Storage storage=null;
 	static {
-		storage = StorageOptions.getDefaultInstance().getService();
+//		storage = StorageOptions.getDefaultInstance().getService();
 	}
 
 	private final static String ADMIN_USER_NAME="sanilk21";
@@ -104,7 +106,25 @@ public class Servlet1 extends HttpServlet {
 
 
 		//New XML Reading
-//		MyRequest myRequest=XMLParser.parseXML(contents);
+		MyRequest myRequest=XMLParser.parseXML(contents);
+		if(myRequest instanceof AuthenticateRequest){
+			AuthenticateRequest authenticateRequest=(AuthenticateRequest)myRequest;
+			System.out.println("Authenticate request");
+			DataOutputStream dos=new DataOutputStream(response.getOutputStream());
+			if(clientHandler.isClientAuthentic(authenticateRequest.senderNick, authenticateRequest.senderPass)){
+				System.out.println("Client is authentic");
+				dos.writeUTF("T");
+			}else{
+				System.out.println("Client is not authentic");
+				dos.writeUTF("F");
+			}
+			dos.flush();
+			dos.close();
+			return;
+//		}else if(myRequest instanceof SendRequest){
+//			SendRequest sendRequest=(SendRequest)myRequest;
+//			sendMessage(sendRequest.message, sendRequest.senderNick, sendRequest.receiverNick, controller);
+		}
 
 		
 		//They mark the locations of ':'

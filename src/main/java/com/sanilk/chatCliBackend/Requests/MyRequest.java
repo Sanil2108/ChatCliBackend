@@ -5,5 +5,5 @@ package com.sanilk.chatCliBackend.Requests;
  */
 public abstract class MyRequest {
     public final static String ROOT="request";
-    public final static String TYPE="type";
+    public final static String TYPE ="type";
 }

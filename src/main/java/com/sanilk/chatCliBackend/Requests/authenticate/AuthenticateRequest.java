@@ -11,8 +11,8 @@ public class AuthenticateRequest extends MyRequest {
     public final static String SENDER_NICK="sender_nick";
     public final static String SENDER_PASSWORD="sender_password";
 
-    String senderNick;
-    String senderPass;
+    public String senderNick;
+    public String senderPass;
 
     public AuthenticateRequest(String senderNick, String senderPass){
         this.senderNick=senderNick;

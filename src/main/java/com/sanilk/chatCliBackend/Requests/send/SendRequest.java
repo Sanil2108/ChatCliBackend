@@ -7,16 +7,16 @@ import com.sanilk.chatCliBackend.Requests.MyRequest;
  */
 public class SendRequest extends MyRequest{
     //constants
-    public final static String TYPE="SEND";
+    public final static String TYPE ="SEND";
     public final static String SENDER_NICK="sender_nick";
     public final static String RECEIVER_NICK="receiver_nick";
     public final static String MESSAGE="message";
     public final static String SENDER_PASSWORD="sender_password";
 
-    String senderNick;
-    String receiverNick;
-    String senderPass;
-    String message;
+    public String senderNick;
+    public String receiverNick;
+    public String senderPass;
+    public String message;
 
     public SendRequest(String senderNick, String receiverNick, String senderPass, String message){
         this.senderNick=senderNick;

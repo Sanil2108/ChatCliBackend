@@ -28,11 +28,15 @@ public class XMLParser {
                 while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(MyRequest.TYPE))) {
                     e=xmlEventReader.nextEvent();
                 }
-                switch (e.asStartElement().getName().toString()){
-                    case SendRequest.TYPE:
-                        return parseSendRequest(xmlEventReader);
-                    case AuthenticateRequest.TYPE:
-                        return parseAuthenticateRequest(xmlEventReader);
+                e=xmlEventReader.nextEvent();
+                if(e.isCharacters()) {
+                    String temp=e.asCharacters().getData();
+                    switch (e.asCharacters().getData()) {
+                        case SendRequest.TYPE:
+                            return parseSendRequest(xmlEventReader);
+                        case AuthenticateRequest.TYPE:
+                            return parseAuthenticateRequest(xmlEventReader);
+                    }
                 }
             }
         }catch (Exception e) {
@@ -41,39 +45,82 @@ public class XMLParser {
         return null;
     }
 
-    static AuthenticateRequest parseAuthenticateRequest(XMLEventReader eventReader) throws Exception{
+    static SendRequest parseSendRequest(XMLEventReader eventReader) throws Exception{
         XMLEvent e=eventReader.nextEvent();
         String senderNick="";
         String senderPassword="";
-        while(eventReader.hasNext()){
-            while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(AuthenticateRequest.SENDER_NICK))){
-                e=eventReader.nextEvent();
-            }
+        String receiverNick="";
+        String message="";
+        while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(SendRequest.SENDER_NICK))){
             e=eventReader.nextEvent();
-            if(e.isCharacters()) {
-                senderNick = e.asCharacters().getData();
-                if(DEBUG){
-                    System.out.println("SenderNick - "+senderNick);
-                }
-            }
-            while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(AuthenticateRequest.SENDER_PASSWORD))){
-                e=eventReader.nextEvent();
-            }
-            e=eventReader.nextEvent();
-            if(e.isCharacters()) {
-                senderPassword = e.asCharacters().getData();
-                if(DEBUG){
-                    System.out.println("SenderPass - "+senderPassword);
-                }
+        }
+        e=eventReader.nextEvent();
+        if(e.isCharacters()) {
+            senderNick = e.asCharacters().getData();
+            if(DEBUG){
+                System.out.println("SenderNick - "+senderNick);
             }
         }
-        return new AuthenticateRequest(senderNick, senderPassword);
+        while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(SendRequest.RECEIVER_NICK))){
+            e=eventReader.nextEvent();
+        }
+        e=eventReader.nextEvent();
+        if(e.isCharacters()) {
+            receiverNick = e.asCharacters().getData();
+            if(DEBUG){
+                System.out.println("ReceiverNick - "+receiverNick);
+            }
+        }
+        while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(SendRequest.SENDER_PASSWORD))){
+            e=eventReader.nextEvent();
+        }
+        e=eventReader.nextEvent();
+        if(e.isCharacters()) {
+            senderPassword = e.asCharacters().getData();
+            if(DEBUG){
+                System.out.println("SenderPass - "+senderPassword);
+            }
+        }
+        while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(SendRequest.MESSAGE))){
+            e=eventReader.nextEvent();
+        }
+        e=eventReader.nextEvent();
+        if(e.isCharacters()) {
+            message = e.asCharacters().getData();
+            if(DEBUG){
+                System.out.println("Message - "+message);
+            }
+        }
+
+        return new SendRequest(senderNick, receiverNick, senderPassword, message);
     }
 
-    static SendRequest parseSendRequest(XMLEventReader eventReader) throws Exception{
+    static AuthenticateRequest parseAuthenticateRequest(XMLEventReader eventReader) throws Exception{
         XMLEvent e;
-        while(eventReader.hasNext()){
+        String senderNick="";
+        String senderPassword="";
+        e=eventReader.nextEvent();
+        while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(AuthenticateRequest.SENDER_NICK))){
+            e=eventReader.nextEvent();
         }
-        return null;
+        e=eventReader.nextEvent();
+        if(e.isCharacters()) {
+            senderNick = e.asCharacters().getData();
+            if(DEBUG){
+                System.out.println("SenderNick - "+senderNick);
+            }
+        }
+        while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(AuthenticateRequest.SENDER_PASSWORD))){
+            e=eventReader.nextEvent();
+        }
+        e=eventReader.nextEvent();
+        if(e.isCharacters()) {
+            senderPassword = e.asCharacters().getData();
+            if(DEBUG){
+                System.out.println("SenderPass - "+senderPassword);
+            }
+        }
+
+        return new AuthenticateRequest(senderNick, senderPassword);
     }
 }
