@@ -2,7 +2,9 @@ package com.sanilk.chatCliBackend;
 
 import com.sanilk.chatCliBackend.Requests.MyRequest;
 import com.sanilk.chatCliBackend.Requests.authenticate.AuthenticateRequest;
+import com.sanilk.chatCliBackend.Requests.receive.ReceiveRequest;
 import com.sanilk.chatCliBackend.Requests.send.SendRequest;
+import com.sanilk.chatCliBackend.Requests.sign_up.SignUpRequest;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -30,12 +32,15 @@ public class XMLParser {
                 }
                 e=xmlEventReader.nextEvent();
                 if(e.isCharacters()) {
-                    String temp=e.asCharacters().getData();
                     switch (e.asCharacters().getData()) {
                         case SendRequest.TYPE:
                             return parseSendRequest(xmlEventReader);
                         case AuthenticateRequest.TYPE:
                             return parseAuthenticateRequest(xmlEventReader);
+                        case SignUpRequest.TYPE:
+                            return parseSignUpRequest(xmlEventReader);
+                        case ReceiveRequest.TYPE:
+                            return parseReceiveRequest(xmlEventReader);
                     }
                 }
             }
@@ -43,6 +48,73 @@ public class XMLParser {
             e.printStackTrace();
         }
         return null;
+    }
+
+    static ReceiveRequest parseReceiveRequest(XMLEventReader eventReader) throws Exception{
+        String senderNick="";
+        String senderPassword="";
+        String receiverNick="";
+        XMLEvent e=eventReader.nextEvent();
+        while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(ReceiveRequest.SENDER_NICK))){
+            e=eventReader.nextEvent();
+        }
+        e=eventReader.nextEvent();
+        if(e.isCharacters()){
+            senderNick=e.asCharacters().getData();
+            if(DEBUG){
+                System.out.println("senderNick - "+senderNick);
+            }
+        }
+        while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(ReceiveRequest.RECEIVER_NICK))){
+            e=eventReader.nextEvent();
+        }
+        e=eventReader.nextEvent();
+        if(e.isCharacters()){
+            receiverNick=e.asCharacters().getData();
+            if(DEBUG){
+                System.out.println("receiverNick - "+receiverNick);
+            }
+        }
+        while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(ReceiveRequest.SENDER_PASSWORD))){
+            e=eventReader.nextEvent();
+        }
+        e=eventReader.nextEvent();
+        if(e.isCharacters()){
+            senderPassword=e.asCharacters().getData();
+            if(DEBUG){
+                System.out.println("senderPassword - "+senderPassword);
+            }
+        }
+
+        return new ReceiveRequest(senderNick, receiverNick, senderPassword);
+    }
+
+    static SignUpRequest parseSignUpRequest(XMLEventReader eventReader) throws Exception{
+        String nick="";
+        String password="";
+        XMLEvent e=eventReader.nextEvent();
+        while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(SignUpRequest.SENDER_NICK))){
+            e=eventReader.nextEvent();
+        }
+        e=eventReader.nextEvent();
+        if(e.isCharacters()){
+            nick=e.asCharacters().getData();
+            if(DEBUG){
+                System.out.println("Nick - "+nick);
+            }
+        }
+        while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(SignUpRequest.SENDER_PASSWORD))){
+            e=eventReader.nextEvent();
+        }
+        e=eventReader.nextEvent();
+        if(e.isCharacters()){
+            password=e.asCharacters().getData();
+            if(DEBUG){
+                System.out.println("Password - "+password);
+            }
+        }
+
+        return new SignUpRequest(nick, password);
     }
 
     static SendRequest parseSendRequest(XMLEventReader eventReader) throws Exception{

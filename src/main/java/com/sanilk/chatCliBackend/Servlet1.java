@@ -15,7 +15,9 @@ import com.google.cloud.storage.StorageOptions;
 import com.sanilk.chatCliBackend.Client.Message;
 import com.sanilk.chatCliBackend.Requests.MyRequest;
 import com.sanilk.chatCliBackend.Requests.authenticate.AuthenticateRequest;
+import com.sanilk.chatCliBackend.Requests.receive.ReceiveRequest;
 import com.sanilk.chatCliBackend.Requests.send.SendRequest;
+import com.sanilk.chatCliBackend.Requests.sign_up.SignUpRequest;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -107,23 +109,46 @@ public class Servlet1 extends HttpServlet {
 
 		//New XML Reading
 		MyRequest myRequest=XMLParser.parseXML(contents);
-		if(myRequest instanceof AuthenticateRequest){
-			AuthenticateRequest authenticateRequest=(AuthenticateRequest)myRequest;
+		if(myRequest instanceof AuthenticateRequest) {
+			AuthenticateRequest authenticateRequest = (AuthenticateRequest) myRequest;
 			System.out.println("Authenticate request");
-			DataOutputStream dos=new DataOutputStream(response.getOutputStream());
-			if(clientHandler.isClientAuthentic(authenticateRequest.senderNick, authenticateRequest.senderPass)){
+			DataOutputStream dos = new DataOutputStream(response.getOutputStream());
+			if (clientHandler.isClientAuthentic(authenticateRequest.senderNick, authenticateRequest.senderPass)) {
 				System.out.println("Client is authentic");
 				dos.writeUTF("T");
-			}else{
+			} else {
 				System.out.println("Client is not authentic");
 				dos.writeUTF("F");
 			}
 			dos.flush();
 			dos.close();
 			return;
-//		}else if(myRequest instanceof SendRequest){
-//			SendRequest sendRequest=(SendRequest)myRequest;
-//			sendMessage(sendRequest.message, sendRequest.senderNick, sendRequest.receiverNick, controller);
+		}else if(myRequest instanceof SignUpRequest){
+			SignUpRequest signUpRequest=(SignUpRequest)myRequest;
+			DataOutputStream dos=new DataOutputStream(response.getOutputStream());
+			if(clientHandler.clientExists(signUpRequest.senderNick)){
+				dos.writeUTF("Client name already exists");
+			}else{
+				System.out.println("Registering new client by username - "+signUpRequest.senderNick+" and password - "+
+					signUpRequest.senderPassword);
+				clientHandler.registerClient(signUpRequest.senderNick, signUpRequest.senderPassword, controller);
+			}
+			dos.flush();
+			dos.close();
+			return;
+		}else if(myRequest instanceof SendRequest){
+			SendRequest sendRequest=(SendRequest)myRequest;
+			sendMessage(sendRequest.message, sendRequest.senderNick, sendRequest.receiverNick, controller);
+			return;
+		}else if(myRequest instanceof ReceiveRequest){
+			ReceiveRequest receiveRequest=(ReceiveRequest)myRequest;
+			DataOutputStream dos = new DataOutputStream(response.getOutputStream());
+//			dos.writeUTF(String.format("\nSender : %s\nRequest type : %s\nMessage : %s\n\nOld messages : %s\n\n", senderNick, request_type, message, checkForNewMessages(senderNick)));
+			String newMessages=checkForNewMessages(receiveRequest.senderNick, receiveRequest.receiverNick, controller);
+			if(newMessages!=null && newMessages!=""){
+				dos.writeUTF(newMessages);
+			}
+			return;
 		}
 
 		
@@ -176,7 +201,7 @@ public class Servlet1 extends HttpServlet {
 		//All formats are from the point of view of sender.
 		//Formats
 		//SEND - senderNick:SEND:receiverNick:password:message
-		//RECEIVER - senderNick:RECEIVE:receiverNick:password:
+		//RECEIVE - senderNick:RECEIVE:receiverNick:password:
 		//CHECK - senderNick:CHECK::password:message (message contains string of usernames seperated by ';')
 		//SIGN_UP - senderNick:SIGN_UP::password:
 		//AUTHENTICATE - senderNick:AUTHENTICATE::password:
