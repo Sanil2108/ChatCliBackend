@@ -127,11 +127,25 @@ public class Servlet1 extends HttpServlet {
 			SignUpRequest signUpRequest=(SignUpRequest)myRequest;
 			DataOutputStream dos=new DataOutputStream(response.getOutputStream());
 			if(clientHandler.clientExists(signUpRequest.senderNick)){
-				dos.writeUTF("Client name already exists");
+				String output="<response>\n" +
+						"    <type>SIGN_UP</type>\n" +
+						"    <succesful>false</succesful>\n" +
+						"    <error_code>100</error_code>\n" +
+						"    <error_details>Client name already exists</error_details>\n" +
+						"</response>";
+				dos.writeUTF(output);
 			}else{
 				System.out.println("Registering new client by username - "+signUpRequest.senderNick+" and password - "+
 					signUpRequest.senderPassword);
 				clientHandler.registerClient(signUpRequest.senderNick, signUpRequest.senderPassword, controller);
+
+				String output="<response>\n" +
+						"    <type>SIGN_UP</type>\n" +
+						"    <succesful>true</succesful>\n" +
+						"    <error_code>0</error_code>\n" +
+						"    <error_details>none</error_details>\n" +
+						"</response>";
+				dos.writeUTF(output);
 			}
 			dos.flush();
 			dos.close();
