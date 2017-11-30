@@ -114,11 +114,25 @@ public class Servlet1 extends HttpServlet {
 			System.out.println("Authenticate request");
 			DataOutputStream dos = new DataOutputStream(response.getOutputStream());
 			if (clientHandler.isClientAuthentic(authenticateRequest.senderNick, authenticateRequest.senderPass)) {
+				String finalXml="<response>\n" +
+						"    <type>AUTHENTICATE</type>\n" +
+						"    <successful>true</successful>\n" +
+						"    <authentic>true</authentic>\n" +
+						"    <error_code>0</error_code>\n" +
+						"    <error_details></error_details>\n" +
+						"</response>";
 				System.out.println("Client is authentic");
-				dos.writeUTF("T");
+				dos.writeUTF(finalXml);
 			} else {
+				String finalXml="<response>\n" +
+						"    <type>AUTHENTICATE</type>\n" +
+						"    <successful>true</successful>\n" +
+						"    <authentic>false</authentic>\n" +
+						"    <error_code>100</error_code>\n" +
+						"    <error_details>Client is not authentic</error_details>\n" +
+						"</response>";
 				System.out.println("Client is not authentic");
-				dos.writeUTF("F");
+				dos.writeUTF(finalXml);
 			}
 			dos.flush();
 			dos.close();
@@ -153,6 +167,14 @@ public class Servlet1 extends HttpServlet {
 		}else if(myRequest instanceof SendRequest){
 			SendRequest sendRequest=(SendRequest)myRequest;
 			sendMessage(sendRequest.message, sendRequest.senderNick, sendRequest.receiverNick, controller);
+			DataOutputStream dos=new DataOutputStream(response.getOutputStream());
+			String finalXML="<response>\n" +
+					"    <type>SEND</type>\n" +
+					"    <succesful>true</succesful>\n" +
+					"    <error_code>0</error_code>\n" +
+					"    <error_details></error_details>\n" +
+					"</response>";
+			dos.writeUTF(finalXML);
 			return;
 		}else if(myRequest instanceof ReceiveRequest){
 			ReceiveRequest receiveRequest=(ReceiveRequest)myRequest;
@@ -160,7 +182,15 @@ public class Servlet1 extends HttpServlet {
 //			dos.writeUTF(String.format("\nSender : %s\nRequest type : %s\nMessage : %s\n\nOld messages : %s\n\n", senderNick, request_type, message, checkForNewMessages(senderNick)));
 			String newMessages=checkForNewMessages(receiveRequest.senderNick, receiveRequest.receiverNick, controller);
 			if(newMessages!=null && newMessages!=""){
-				dos.writeUTF(newMessages);
+				String finalXML="<response>\n" +
+						"    <type>RECEIVE</type>\n" +
+						"    <succesful>true</succesful>\n" +
+						"    <error_code>0</error_code>\n" +
+						"    <error_details></error_details>\n" +
+						"    <message>"+newMessages+"</message>\n" +
+						"    <time_of_sending></time_of_sending>\n" +
+						"</response>";
+				dos.writeUTF(finalXML);
 			}
 			return;
 		}
