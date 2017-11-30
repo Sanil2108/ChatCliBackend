@@ -193,8 +193,7 @@ public class Servlet1 extends HttpServlet {
 				
 				continue;
 			}
-			
-			//password should be before the message. otherwise if the message contains ':', password would be wrongly interpreted
+
 			if(k1==-1){
 				senderNick+=requestContents[i];
 			}else if(k2==-1){
