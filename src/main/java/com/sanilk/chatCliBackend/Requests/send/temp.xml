@@ -4,5 +4,10 @@
     <sender_nick></sender_nick>
     <receiver_nick></receiver_nick>
     <sender_password></sender_password>
-    <message></message>
+    <messages>
+        <message>
+            <contents></contents>
+            <encrypt_duration></encrypt_duration>
+        </message>
+    </messages>
 </request>

@@ -70,12 +70,12 @@ public class ClientHandler {
 		return null;
 	}
 	
-	public void sendToClient(String message, String nick, String receiverNick, JDBCController controller){
+	public void sendToClient(String message, String nick, String receiverNick, JDBCController controller, int encryptDuration){
 		if(allClients.containsKey(nick)){
 			if(allClients.containsKey(receiverNick)){
 				Client client=allClients.get(nick);
 				Client rcvr=allClients.get(receiverNick);
-				client.sendMessage(message, rcvr);
+				client.sendMessage(message, rcvr, encryptDuration);
 			}
 		}else{
 			//Commenting this part, not sure what to do

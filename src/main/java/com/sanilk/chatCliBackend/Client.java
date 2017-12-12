@@ -42,8 +42,8 @@ public class Client {
 		return info;
 	}
 	
-	public void sendMessage(String text, Client receiver){
-		Message msg=new Message(text);
+	public void sendMessage(String text, Client receiver,  int encryptDuration){
+		Message msg=new Message(text, encryptDuration);
 		msg.from=this;
 		msg.to=receiver;
 		receiver.receiveMessage(msg);
@@ -56,9 +56,12 @@ public class Client {
 	//Looking for messages sent by nick of sender
 	public ArrayList<Message> checkMessages(String sender){
 		ArrayList<Message> forThisClient=new ArrayList();
-		for(Message message : received){
+		for(int i=0;i<received.size();i++){
+			Message message=received.get(i);
 			if(message.from.nick.equals(sender)){
 				forThisClient.add(message);
+				received.remove(i);
+				i--;
 			}
 		}
 		return forThisClient;
@@ -69,6 +72,7 @@ public class Client {
 	}
 	
 	public static class Message{
+		public int encryptDuration;
 		public boolean delivered=false;
 		public String msg=null;
 		public Client to;
@@ -76,8 +80,9 @@ public class Client {
 		
 		private Message(){}
 		
-		public Message(String msg){
+		public Message(String msg, int encryptDuration){
 			this.msg=msg;
+			this.encryptDuration=encryptDuration;
 		}
 		
 		public void delivered(){

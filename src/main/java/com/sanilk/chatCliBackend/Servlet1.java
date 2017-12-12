@@ -166,7 +166,9 @@ public class Servlet1 extends HttpServlet {
 			return;
 		}else if(myRequest instanceof SendRequest){
 			SendRequest sendRequest=(SendRequest)myRequest;
-			sendMessage(sendRequest.message, sendRequest.senderNick, sendRequest.receiverNick, controller);
+			for(Message clientMessage:sendRequest.messages){
+				sendMessage(clientMessage.msg, sendRequest.senderNick, sendRequest.receiverNick, controller, clientMessage.encryptDuration);
+			}
 			DataOutputStream dos=new DataOutputStream(response.getOutputStream());
 			String finalXML="<response>\n" +
 					"    <type>SEND</type>\n" +
@@ -180,18 +182,25 @@ public class Servlet1 extends HttpServlet {
 			ReceiveRequest receiveRequest=(ReceiveRequest)myRequest;
 			DataOutputStream dos = new DataOutputStream(response.getOutputStream());
 //			dos.writeUTF(String.format("\nSender : %s\nRequest type : %s\nMessage : %s\n\nOld messages : %s\n\n", senderNick, request_type, message, checkForNewMessages(senderNick)));
-			String newMessages=checkForNewMessages(receiveRequest.senderNick, receiveRequest.receiverNick, controller);
-			if(newMessages!=null && newMessages!=""){
-				String finalXML="<response>\n" +
-						"    <type>RECEIVE</type>\n" +
-						"    <succesful>true</succesful>\n" +
-						"    <error_code>0</error_code>\n" +
-						"    <error_details></error_details>\n" +
-						"    <message>"+newMessages+"</message>\n" +
+			ArrayList<Message> messages=checkForNewMessages(receiveRequest.senderNick, receiveRequest.receiverNick, controller);
+			String finalXML="<response>\n" +
+					"    <type>RECEIVE</type>\n" +
+					"    <succesful>true</succesful>\n" +
+					"    <error_code>0</error_code>\n" +
+					"    <error_details></error_details>\n" +
+					"    <messages>\n";
+			for(Message i:messages){
+				finalXML+="<message>\n" +
+						"	<contents>"+i.msg+"</contents>\n" +
+						"	<encryption_duration>"+i.encryptDuration+"</encryption_duration>\n" +
+						"</message>\n";
+			}
+
+			finalXML+=	"    </messages>\n" +
 						"    <time_of_sending></time_of_sending>\n" +
 						"</response>";
 				dos.writeUTF(finalXML);
-			}
+//			}
 			return;
 		}
 
@@ -269,13 +278,18 @@ public class Servlet1 extends HttpServlet {
 		}
 		
 		if(request_type.equals(REQUEST_TYPES[0])){
-			sendMessage(message, senderNick, receiverNick, controller);
+//			sendMessage(message, senderNick, receiverNick, controller);
 		}else if(request_type.equals(REQUEST_TYPES[1])){
 			DataOutputStream dos = new DataOutputStream(response.getOutputStream());
 //			dos.writeUTF(String.format("\nSender : %s\nRequest type : %s\nMessage : %s\n\nOld messages : %s\n\n", senderNick, request_type, message, checkForNewMessages(senderNick)));
-			String newMessages=checkForNewMessages(senderNick, receiverNick, controller);
-			if(newMessages!=null && newMessages!=""){
-				dos.writeUTF(newMessages);
+//			String newMessages
+			ArrayList<Message> messages
+					=checkForNewMessages(senderNick, receiverNick, controller);
+//			if(newMessages!=null && newMessages!=""){
+//				dos.writeUTF(newMessages);
+//			}
+			if(messages!=null){
+				dos.writeUTF("RECEIVING MESSAGES USING THIS CODE IS NOW INCOMPATIBLE");
 			}
 		}else if(request_type.equals(REQUEST_TYPES[2])){
 			DataOutputStream dos=new DataOutputStream(response.getOutputStream());
@@ -330,22 +344,22 @@ public class Servlet1 extends HttpServlet {
 		return clientHandler.getAllInfo(senderNick, senders);
 	}
 	
-	public void sendMessage(String message, String senderNick, String receiverNick, JDBCController controller){
-		((ClientHandler)getServletContext().getAttribute("clientHandler")).sendToClient(message, senderNick, receiverNick, controller);
+	public void sendMessage(String message, String senderNick, String receiverNick, JDBCController controller, int encryptDuration){
+		((ClientHandler)getServletContext().getAttribute("clientHandler")).sendToClient(message, senderNick, receiverNick, controller, encryptDuration);
 	}
 	
-	public String checkForNewMessages(String nick, String senderNick, JDBCController controller){
+	public ArrayList<Message> checkForNewMessages(String nick, String senderNick, JDBCController controller){
 		ClientHandler clientHandler=((ClientHandler)getServletContext().getAttribute("clientHandler"));
 		String newMessages="";
 		ArrayList<Message> newMessagesList=clientHandler.checkClient(nick, senderNick, controller);
-		if(newMessagesList!=null && newMessagesList.size()>0){
-			for(int i=0;i<newMessagesList.size();i++){
-				newMessages+=newMessagesList.get(i);
-			}
-			clientHandler.clearMessages(nick, senderNick);
-			return newMessages;
-		}
-		return null;
+//		if(newMessagesList!=null && newMessagesList.size()>0){
+//			for(int i=0;i<newMessagesList.size();i++){
+//				newMessages+=newMessagesList.get(i);
+//			}
+//			clientHandler.clearMessages(nick, senderNick);
+//			return newMessages;
+//		}
+		return newMessagesList;
 	}
 	
 }

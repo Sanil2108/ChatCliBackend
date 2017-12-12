@@ -10,6 +10,7 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.events.XMLEvent;
 import java.io.StringReader;
+import java.util.ArrayList;
 
 /**
  * Created by root on 15/11/17.
@@ -122,7 +123,7 @@ public class XMLParser {
         String senderNick="";
         String senderPassword="";
         String receiverNick="";
-        String message="";
+        ArrayList<Client.Message> messages=new ArrayList<>();
         while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(SendRequest.SENDER_NICK))){
             e=eventReader.nextEvent();
         }
@@ -153,18 +154,53 @@ public class XMLParser {
                 System.out.println("SenderPass - "+senderPassword);
             }
         }
-        while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(SendRequest.MESSAGE))){
+        while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(SendRequest.MESSAGE_ROOT))){
             e=eventReader.nextEvent();
         }
-        e=eventReader.nextEvent();
-        if(e.isCharacters()) {
-            message = e.asCharacters().getData();
-            if(DEBUG){
-                System.out.println("Message - "+message);
+        while(true) {
+            String message="";
+            int encryptDuration=-2;
+            while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(SendRequest.MESSAGE))){
+                e=eventReader.nextEvent();
+            }
+            e = eventReader.nextEvent();
+            while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(SendRequest.CONTENTS))){
+                e=eventReader.nextEvent();
+            }
+            e=eventReader.nextEvent();
+            if (e.isCharacters()) {
+                message = e.asCharacters().getData();
+                if (DEBUG) {
+                    System.out.println("Message - " + message);
+                }
+            }
+            while(!(e.isStartElement() && e.asStartElement().getName().toString().equals(SendRequest.ENCRYPTION_DURATION))){
+                e=eventReader.nextEvent();
+            }
+            e = eventReader.nextEvent();
+            if (e.isCharacters()) {
+                encryptDuration=Integer.parseInt(e.asCharacters().getData());
+                if (DEBUG) {
+                    System.out.print("\tEncrypt duration - " + encryptDuration);
+                }
+            }
+
+            if(!(encryptDuration==-2 || message=="")){
+                messages.add(new Client.Message(message, encryptDuration));
+            }
+
+            while(!((e.isStartElement() && e.asStartElement().getName().toString().equals(SendRequest.MESSAGE)) ||
+                    (e.isEndElement() && e.asEndElement().getName().toString().equals(SendRequest.MESSAGE_ROOT)))){
+                e=eventReader.nextEvent();
+            }
+            if(e.isStartElement() && e.asStartElement().getName().toString().equals(SendRequest.MESSAGE)){
+                continue;
+            }else{
+                break;
             }
         }
 
-        return new SendRequest(senderNick, receiverNick, senderPassword, message);
+        return new SendRequest(senderNick, receiverNick, senderPassword, messages);
     }
 
     static AuthenticateRequest parseAuthenticateRequest(XMLEventReader eventReader) throws Exception{
