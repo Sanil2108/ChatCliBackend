@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3eace2a4-6f5b-415a-ab7f-d17776475cc6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/com_google_appengine_appengine_api_1_0_sdk_Release.xml" afterPath="$PROJECT_DIR$/.idea/libraries/com_google_appengine_appengine_api_1_0_sdk_Release.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/com_google_appengine_appengine_endpoints_Release.xml" afterPath="$PROJECT_DIR$/.idea/libraries/com_google_appengine_appengine_endpoints_Release.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/com_googlecode_objectify_objectify_Release.xml" afterPath="$PROJECT_DIR$/.idea/libraries/com_googlecode_objectify_objectify_Release.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="3eace2a4-6f5b-415a-ab7f-d17776475cc6" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -1849,12 +1844,12 @@
       <workItem from="1512967679545" duration="1243000" />
       <workItem from="1513063785799" duration="10026000" />
       <workItem from="1513235624052" duration="1270000" />
-      <workItem from="1513307399285" duration="3212000" />
+      <workItem from="1513307399285" duration="3812000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="98024000" />
+    <option name="totallyTimeSpent" value="98624000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="40" y="-14" width="1881" height="1095" extended-state="6" />
