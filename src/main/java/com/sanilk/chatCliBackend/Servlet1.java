@@ -6,12 +6,6 @@ import com.google.appengine.repackaged.org.joda.time.DateTime;
 import com.google.appengine.repackaged.org.joda.time.DateTimeZone;
 import com.google.appengine.repackaged.org.joda.time.format.DateTimeFormat;
 import com.google.appengine.repackaged.org.joda.time.format.DateTimeFormatter;
-import com.google.cloud.storage.Acl;
-import com.google.cloud.storage.Acl.Role;
-import com.google.cloud.storage.Acl.User;
-import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
 import com.sanilk.chatCliBackend.Client.Message;
 import com.sanilk.chatCliBackend.Requests.MyRequest;
 import com.sanilk.chatCliBackend.Requests.authenticate.AuthenticateRequest;
@@ -52,7 +46,6 @@ public class Servlet1 extends HttpServlet {
 	File logFile;
 	String appLogs;
 
-	static Storage storage=null;
 	static {
 //		storage = StorageOptions.getDefaultInstance().getService();
 	}
