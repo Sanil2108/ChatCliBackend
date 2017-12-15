@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3eace2a4-6f5b-415a-ab7f-d17776475cc6" name="Default" comment="" />
+    <list default="true" id="3eace2a4-6f5b-415a-ab7f-d17776475cc6" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,11 +26,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="XMLParser.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="XMLParser.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/sanilk/chatCliBackend/XMLParser.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="376">
               <caret line="207" column="8" lean-forward="true" selection-start-line="207" selection-start-column="8" selection-end-line="207" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="8" column="35" lean-forward="false" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -145,7 +157,6 @@
         <option value="$PROJECT_DIR$/web/WEB-INF/web.xml" />
         <option value="$PROJECT_DIR$/src/com/sanilk/chatCliBackend/ClientHandler.java" />
         <option value="$PROJECT_DIR$/src/com/sanilk/chatCliBackend/Servlet1.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/sanilk/chatCliBackend/temp.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/sanilk/chatCliBackend/Requests/XMLRequest.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sanilk/chatCliBackend/Requests/authenticate/temp.xml" />
@@ -164,6 +175,7 @@
         <option value="$PROJECT_DIR$/src/main/java/com/sanilk/chatCliBackend/ClientHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sanilk/chatCliBackend/Servlet1.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sanilk/chatCliBackend/Client.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>
@@ -1844,12 +1856,12 @@
       <workItem from="1512967679545" duration="1243000" />
       <workItem from="1513063785799" duration="10026000" />
       <workItem from="1513235624052" duration="1270000" />
-      <workItem from="1513307399285" duration="3812000" />
+      <workItem from="1513307399285" duration="3883000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="98624000" />
+    <option name="totallyTimeSpent" value="98695000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="40" y="-14" width="1881" height="1095" extended-state="6" />
@@ -2375,14 +2387,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="20" lean-forward="false" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/sanilk/chatCliBackend/Requests/receive/ReceiveRequest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -2469,6 +2473,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="376">
           <caret line="207" column="8" lean-forward="true" selection-start-line="207" selection-start-column="8" selection-end-line="207" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="35" lean-forward="false" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
           <folding />
         </state>
       </provider>
