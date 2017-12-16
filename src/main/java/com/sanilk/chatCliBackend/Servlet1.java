@@ -1,11 +1,11 @@
 package com.sanilk.chatCliBackend;
 
-import com.google.appengine.api.blobstore.BlobstoreService;
-import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.google.appengine.repackaged.org.joda.time.DateTime;
-import com.google.appengine.repackaged.org.joda.time.DateTimeZone;
-import com.google.appengine.repackaged.org.joda.time.format.DateTimeFormat;
-import com.google.appengine.repackaged.org.joda.time.format.DateTimeFormatter;
+//import com.google.appengine.api.blobstore.BlobstoreService;
+//import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+//import com.google.appengine.repackaged.org.joda.time.DateTime;
+//import com.google.appengine.repackaged.org.joda.time.DateTimeZone;
+//import com.google.appengine.repackaged.org.joda.time.format.DateTimeFormat;
+//import com.google.appengine.repackaged.org.joda.time.format.DateTimeFormatter;
 import com.sanilk.chatCliBackend.Client.Message;
 import com.sanilk.chatCliBackend.Requests.MyRequest;
 import com.sanilk.chatCliBackend.Requests.authenticate.AuthenticateRequest;
@@ -318,7 +318,7 @@ public class Servlet1 extends HttpServlet {
 			
 		}else if(request_type.equals(REQUEST_TYPES[5])){
 			appLogs=appLogs+message;
-			BlobstoreService blobstoreService= BlobstoreServiceFactory.getBlobstoreService();
+//			BlobstoreService blobstoreService= BlobstoreServiceFactory.getBlobstoreService();
 
 		}else if(request_type.equals(REQUEST_TYPES[6])){
 			if(senderNick.equals(ADMIN_USER_NAME) && password.equals(ADMIN_PASSWORD)){
